@@ -1,0 +1,33 @@
+# ansible -m ping all
+#play
+---
+- hosts: all
+  become: yes
+  tasks:
+  - name: Execute ansible ping on hosts
+    ping:
+  - name: update packages on ubuntu
+    apt:
+      name: git
+      update_cache: yes
+  - name: install tree
+    apt:
+      name: tree
+      state: present
+  - name: install vagrant
+    apt:
+      name: vagrant
+      update_cache: yes
+  - name: install maven
+    apt:
+      name: maven
+      update_cache: yes
+  - name: install apache
+    apt:
+      name: apache2
+      update_cache: yes
+      state: present
+
+
+    
+  

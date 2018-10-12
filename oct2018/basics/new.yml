@@ -1,0 +1,28 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+  - name: install apache2
+    apt:
+      name: apache2
+      update_cache: yes
+      state: present
+    notify: 
+    - restart apache
+  - name: Install php packeges for debian
+    apt:
+      name: "{{ item }}"
+      state: present
+    loop:
+      - php
+      - libapache2-mod-php
+      - php-mcrypt
+      - php-mysql
+    notify: 
+    - restart apache
+  handlers:
+  - name: restart apache
+    service:
+      name: apache2
+      enabled: yes
+      state: restarted
