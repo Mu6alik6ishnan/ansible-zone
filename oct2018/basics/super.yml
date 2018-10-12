@@ -1,0 +1,37 @@
+  - name: Install utility packages common to all hosts
+      apt:
+        name: "{{ item }}"
+        state: present
+        autoclean: yes
+      with_items:
+        - aptitude
+        - jq
+        - curl
+        - git-core
+        - at
+
+
+
+
+  - name: Install utility packages common to all hosts
+    apt:
+      name:
+       - aptitude
+       - jq
+       - curl
+       - git-core
+       - at
+    state: present
+    autoclean: yes
+
+
+
+
+  - name: Install php packeges
+    apt:
+      name:    
+      - php
+      - libapache2-mod-php
+      - php-mcrypt
+      - php-mysql
+    state: present

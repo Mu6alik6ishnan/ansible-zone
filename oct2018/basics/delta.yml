@@ -45,7 +45,7 @@
       dest: /var/www/html/info.php
     notify: 
     - restart httpd
-    - restart apache2
+    - restart apache
   handlers:
   - name: restart apache
     service:
