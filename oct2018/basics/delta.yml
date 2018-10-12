@@ -1,0 +1,61 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+  - name: install apache2
+    apt:
+      name: apache2
+      update_cache: yes
+      state: present
+    notify: 
+    - restart apache
+    when: ansible_os_family == "Debian"
+  - name: Install php packeges for debian
+    apt:
+      name: "{{ item }}"
+      state: present
+    loop:
+      - php
+      - libapache2-mod-php
+      - php-mcrypt
+      - php-mysql
+    notify: 
+    - restart apache
+    when: ansible_os_family == "Debian"
+  - name: install httpd
+    yum:
+      name: httpd
+      state: present
+    notify: 
+    - restart httpd
+    when: ansible_os_family == "Redhat"
+  - name: Install php packages for redhat
+    yum:
+      name: "{{ item }}"
+      state: present
+    loop:
+      - php
+      - php-mysql
+    notify: 
+    - restart httpd
+    when: ansible_os_family == "Redhat"
+  - name: download webpage
+    get_url:
+      url: https://raw.githubusercontent.com/Mu6alik6ishnan/ansible-zone/master/oct2018/basics/info.php
+      dest: /var/www/html/info.php
+    notify: 
+    - restart httpd
+    - restart apache2
+  handlers:
+  - name: restart apache
+    service:
+      name: apache2
+      enabled: yes
+      state: restarted
+    when: ansible_os_family == "Debian"
+  - name: restart httpd
+    service:
+      name: httpd
+      enabled: yes
+      state: restarted
+    when: ansible_os_family == "Redhat"
